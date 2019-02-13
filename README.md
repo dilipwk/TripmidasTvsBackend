@@ -10,6 +10,7 @@
 ## Installation
 * Clone this repo: ``` git clone https://github.com/dilipwk/TripmidasTvsBackend.git ```
 * Install dependecies: ``` npm install ```
+* Install Mongodb: https://docs.mongodb.com/v3.0/tutorial/
 * Install nodemon: ``` npm install nodemon -g ```
 
  
