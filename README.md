@@ -10,8 +10,12 @@
 ## Installation
 * Clone this repo: ``` git clone https://github.com/dilipwk/TripmidasTvsBackend.git ```
 * Install dependecies: ``` npm install ```
-* Install Mongodb: https://docs.mongodb.com/v3.0/tutorial/
 * Install nodemon: ``` npm install nodemon -g ```
+* In project root folder create a directory ```data``` mkdir data
+* Install Mongodb: https://docs.mongodb.com/v3.0/tutorial/
+* Open terminal navigate to mongo folder where you have installed mostly it will be in c:\Program Files\MongoDB\Server\3.4|3.2\bin
+* Point to the database folder of project ```mongod --dbpath c:\path to project\data```
+* From project root folder ```nodemon server.js```
 
  
 
