@@ -2,6 +2,7 @@ const express = require('express');
 const logger = require('morgan');
 const movies = require('./routes/movies') ;
 const users = require('./routes/users');
+const requestBid = require('./routes/admin/requestBid')
 const bodyParser = require('body-parser');
 const mongoose = require('./config/database'); //database configuration
 var jwt = require('jsonwebtoken');
@@ -14,6 +15,7 @@ mongoose.connection.on('error', console.error.bind(console, 'MongoDB connection 
 
 app.use(logger('dev'));
 app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.json());
 
 app.get('/', function(req, res){
 res.json({"tutorial" : "Build REST API with node.js"});
@@ -24,6 +26,9 @@ app.use('/users', users);
 
 // private route
 app.use('/movies', validateUser, movies);
+
+//request bid
+app.use('/requestbid',validateUser,requestBid)
 
 
 app.get('/favicon.ico', function(req, res) {
