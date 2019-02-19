@@ -4,6 +4,6 @@ const requestBidController = require('../../app/api/controllers/admin/requestBid
 
 router.get('/', requestBidController.getAll);
 router.post('/', requestBidController.create);
-router.get('/:movieId', requestBidController.getById);
+router.get('/:bidId', requestBidController.getById);
 
 module.exports = router;
