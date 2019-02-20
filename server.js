@@ -5,6 +5,7 @@ const users = require('./routes/users');
 const requestBid = require('./routes/admin/requestBid');
 const submitBid = require('./routes/vendor/submitBid');
 const manageVendors = require('./routes/vendor/manageVendors');
+const createTicket = require('./routes/vendor/createTicket');
 const bodyParser = require('body-parser');
 const mongoose = require('./config/database'); //database configuration
 var jwt = require('jsonwebtoken');
@@ -37,6 +38,9 @@ app.use('/submitbid',validateUser,submitBid);
 
 //Manage Vendors
 app.use('/manageVendors',validateUser,manageVendors);
+
+//Create Ticket
+app.use('/createTicket',validateUser,createTicket);
 
 
 app.get('/favicon.ico', function(req, res) {

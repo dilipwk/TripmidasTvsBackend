@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 //Define a schema
 const Schema = mongoose.Schema;
 
-const submitBidSchema = new Schema({
+const createTicketSchema = new Schema({
     adminRequestBidId: {
         type: String,
         trim: true,
@@ -30,7 +30,7 @@ const submitBidSchema = new Schema({
 		required: true,
     },
     ticket:{
-        type:File,
+        type:Object,
         required:true
     },
     updatedOn: {
@@ -39,4 +39,4 @@ const submitBidSchema = new Schema({
     }
 });
 
-module.exports = mongoose.model('submitBid', submitBidSchema)
+module.exports = mongoose.model('createTicket', createTicketSchema)

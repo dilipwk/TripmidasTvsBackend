@@ -1,5 +1,6 @@
 
-const CreateTicketModel = require('../../models/vendor/createTicket' );					
+const CreateTicketModel = require('../../models/vendor/createTicket' );		
+
 
 module.exports = {
 	getById: function(req, res, next) {
@@ -28,6 +29,11 @@ module.exports = {
 			}
 
 		});
+    },
+    
+    upload: function(req, res, next) {
+        console.log(req);
+        res.json({'message': req.file});
 	},
 
 	create: function(req, res, next) {
