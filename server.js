@@ -2,7 +2,9 @@ const express = require('express');
 const logger = require('morgan');
 const movies = require('./routes/movies') ;
 const users = require('./routes/users');
-const requestBid = require('./routes/admin/requestBid')
+const requestBid = require('./routes/admin/requestBid');
+const submitBid = require('./routes/vendor/submitBid');
+const manageVendors = require('./routes/vendor/manageVendors');
 const bodyParser = require('body-parser');
 const mongoose = require('./config/database'); //database configuration
 var jwt = require('jsonwebtoken');
@@ -28,7 +30,13 @@ app.use('/users', users);
 app.use('/movies', validateUser, movies);
 
 //request bid
-app.use('/requestbid',validateUser,requestBid)
+app.use('/requestbid',validateUser,requestBid);
+
+//submit bid
+app.use('/submitbid',validateUser,submitBid);
+
+//Manage Vendors
+app.use('/manageVendors',validateUser,manageVendors);
 
 
 app.get('/favicon.ico', function(req, res) {

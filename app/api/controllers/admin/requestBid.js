@@ -14,7 +14,7 @@ module.exports = {
                     res.json({status:"success", message: "Data found!!!",isValid:true, data:{bidInfo: bidInfo}});
                 }
                 else{
-                    res.json({status:"success", message: "Timeout", isValid:false,data:{bidInfo: null}});
+                    res.json({status:"success", message: "Timeout", isValid:false,data:{bidInfo: bidInfo}});
                 }
                 
 			}
@@ -29,9 +29,9 @@ module.exports = {
 				next(err);
 			} else{
 				for (let bid of bids) {
-					bidData.push({id: bid._id, source: bid.source, destination: bid.destination,dateTime:bid.date,PreferredTime:bid.PreferredTime, flightIds:bid.flightIds,updatedOn:bid.updatedOn});
+					bidData.push({bid:bid});
 				}
-				res.json({status:"success", message: "Bid List", data:{requestBids: bidData}});
+				res.json({status:"success", message: "Bid List", data:{bidData}});
 							
 			}
 
@@ -41,7 +41,7 @@ module.exports = {
 
 	create: function(req, res, next) {
         console.log(JSON.stringify(req.body));
-		requestBid.create({ source: req.body.source, destination: req.body.destination,date:req.body.date,PreferredTime:req.body.PreferredTime,flightIds:req.body.flightIds,updatedOn: new Date() }, function (err, result) {
+		requestBid.create({ travelId: req.body.travelId, travelDetails: req.body.travelDetails,travellerDetails:req.body.travellerDetails,updatedOn: new Date() }, function (err, result) {
 				  if (err) 
 				  	next(err);
 				  else

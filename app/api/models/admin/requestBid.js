@@ -4,30 +4,16 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const requestBidSchema = new Schema({
-	source: {
-		type: String,
+    travelDetails: {
+        type: Object,
 		trim: false,		
 		required: true,
-	},
-	destination: {
-		type: String,
-		trim: false,
-		required: true
-	},
-    date: {
-        type: Date,
-        trim:  true,
-        required: true,
-	},
-	PreferredTime: {
-        type: Object,
-        trim:  true,
-        required: false,
     },
-    flightIds: {
-        type: Array,
-        required:true
-    },
+    travellerDetails: {
+		type: Object,
+		trim: false,		
+		required: true,
+	}, 
     updatedOn: {
         type: Date,
         trim:  true,
