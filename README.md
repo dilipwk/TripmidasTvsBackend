@@ -8,7 +8,7 @@
 * Node, NPM & MongoDB
 
 ## Installation
-* Clone this repo: ``` git clone https://github.com/dilipwk/TripmidasTvsBackend.git ```
+* Clone this repo: ``` git clone https://github.com/dilipwk/nodebackend.git ```
 * Install dependecies: ``` npm install ```
 * Install nodemon: ``` npm install nodemon -g ```
 * In project root folder create a directory ```data``` mkdir data
