@@ -9,6 +9,7 @@
 
 ## Installation
 * Clone this repo: ``` git clone https://github.com/dilipwk/nodebackend.git ```
+* cd nodebackend
 * Install dependecies: ``` npm install ```
 * Install nodemon: ``` npm install nodemon -g ```
 * In project root folder create a directory ```data``` mkdir data
