@@ -34,13 +34,13 @@ app.use('/movies', validateUser, movies);
 app.use('/requestbid',validateUser,requestBid);
 
 //submit bid
-app.use('/submitbid',validateUser,submitBid);
+app.use('/submitbid',submitBid);
 
 //Manage Vendors
 app.use('/manageVendors',validateUser,manageVendors);
 
 //Create Ticket
-app.use('/createTicket',validateUser,createTicket);
+app.use('/createTicket',createTicket);
 
 
 app.get('/favicon.ico', function(req, res) {
