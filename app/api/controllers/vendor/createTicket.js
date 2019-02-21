@@ -32,12 +32,11 @@ module.exports = {
     },
     
     upload: function(req, res, next) {
-        console.log(req);
         res.json({'message': req.file});
 	},
 
 	create: function(req, res, next) {
-		CreateTicketModel.create({ adminRequestBidId: req.body.adminRequestBidId, vendorId: req.body.vendorId,vendorBidId: req.body.vendorBidId,travelDetails: req.body.travelDetails,travellerDetails: req.body.travellerDetails,ticket: req.body.ticket, updatedOn:new Date() }, function (err, result) {
+		CreateTicketModel.create({ adminRequestBidId: req.body.adminRequestBidId, vendorId: req.body.vendorId,vendorBidId: req.body.vendorBidId,travelDetails: req.body.travelDetails,travellerDetails: req.body.travellerDetails,ticketPath:req.body.ticketPath, updatedOn:new Date() }, function (err, result) {
 				  if (err) 
 				  	next(err);
 				  else

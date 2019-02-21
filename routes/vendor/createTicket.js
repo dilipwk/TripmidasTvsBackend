@@ -6,7 +6,7 @@ var upload = multer({ dest: 'uploads/tickets/' })
 
 router.get('/', createTicketController.getAll);
 router.post('/', createTicketController.create);
-router.post('/uploadTicket', upload.single('avatar'), createTicketController.upload);
+router.post('/uploadTicket', upload.single('ticket'), createTicketController.upload);
 router.get('/:bidId', createTicketController.getById);
 
 module.exports = router;

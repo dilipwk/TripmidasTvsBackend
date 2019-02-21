@@ -29,8 +29,8 @@ const createTicketSchema = new Schema({
 		trim: false,		
 		required: true,
     },
-    ticket:{
-        type:Object,
+    ticketPath:{
+        type:String,
         required:true
     },
     updatedOn: {

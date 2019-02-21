@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<title>JioBrowser</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+
+<body style="background: #180a7c;">
+
+<!-- Navbar (sit on top) -->
+<div class="w3-bottom">
+  <div class="w3-bar w3-wide w3-padding w3-card" style="height:150px;border-top-left-radius: 37%; border-top-right-radius: 37%;
+  background: #00519D;">
+    <div class=" w3-center w3-margin-top" style="color:white;overflow: -webkit-paged-x;height: 110px;">
+      <div class="w3-bar-item"> <img src="https://i.imgur.com/tQroCmO.png" height="60px"> <br> Website Name</div>
+      <div class="w3-bar-item"> <img src="https://i.imgur.com/tQroCmO.png" height="60px"> <br> Website Name</div>
+      <div class="w3-bar-item"> <img src="https://i.imgur.com/tQroCmO.png" height="60px"> <br> Website Name</div>
+      <div class="w3-bar-item"> <img src="https://i.imgur.com/tQroCmO.png" height="60px"> <br> Website Name</div>
+      <div class="w3-bar-item"> <img src="https://i.imgur.com/tQroCmO.png" height="60px"> <br> Website Name</div>
+      <div class="w3-bar-item"> <img src="https://i.imgur.com/tQroCmO.png" height="60px"> <br> Website Name</div>
+      <div class="w3-bar-item"> <img src="https://i.imgur.com/tQroCmO.png" height="60px"> <br> Website Name</div>
+      <div class="w3-bar-item"> <img src="https://i.imgur.com/tQroCmO.png" height="60px"> <br> Website Name</div>
+      <div class="w3-bar-item"> <img src="https://i.imgur.com/tQroCmO.png" height="60px"> <br> Website Name</div>
+      <div class="w3-bar-item"> <img src="https://i.imgur.com/tQroCmO.png" height="60px"> <br> Website Name</div>
+      <div class="w3-bar-item"> <img src="https://i.imgur.com/tQroCmO.png" height="60px"> <br> Website Name</div>
+      <div class="w3-bar-item"> <img src="https://i.imgur.com/tQroCmO.png" height="60px"> <br> Website Name</div>
+      <div class="w3-bar-item"> <img src="https://i.imgur.com/tQroCmO.png" height="60px"> <br> Website Name</div>
+      <div class="w3-bar-item"> <img src="https://i.imgur.com/tQroCmO.png" height="60px"> <br> Website Name</div>
+    </div>
+    
+  </div>
+</div>
+
+<!-- Page content -->
+<div class="w3-content w3-padding" style="max-width:1564px">
+    <div class="w3-display-middle w3-margin-top w3-center">
+        <img src="https://i.imgur.com/TE8PGSH.png">
+        <h1 class="w3-xxlarge w3-text-white"><span class="w3-padding"><b>JioBrowser</b></span></h1>
+      </div>
+</div>
+<!-- End page content -->
+
+
+
+</body>
+</html>
