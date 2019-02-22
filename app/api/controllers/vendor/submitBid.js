@@ -58,4 +58,13 @@ module.exports = {
 				});
 	},
 
+	filterBid: function(req,res,next){
+		submitBid.findById(req.params.requestBidId, function(err, bidInfo){
+			if (err) {
+				next(err);
+			} else {
+				res.json({status:"success", message: "Data found!!!",isValid:true, data:{bidInfo}});
+			}
+		});
+	},
 }					
