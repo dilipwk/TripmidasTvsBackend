@@ -44,9 +44,9 @@ module.exports = {
 		requestBid.create({ travelId: req.body.travelId, travelDetails: req.body.travelDetails,travellerDetails:req.body.travellerDetails,updatedOn: new Date() }, function (err, result) {
 				  if (err) 
 				  	next(err);
-				  else
+				  else{
 				  	res.json({status: "success", message: "Requested for bid successfully", data: result});
-				  
+				  }
 				});
 	},
 

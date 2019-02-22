@@ -9,6 +9,25 @@ const createTicket = require('./routes/vendor/createTicket');
 const bodyParser = require('body-parser');
 const mongoose = require('./config/database'); //database configuration
 var jwt = require('jsonwebtoken');
+const nodemailer = require("nodemailer");
+  // create reusable transporter object using the default SMTP transport
+  let transporter = nodemailer.createTransport({
+    host: "smtp.office365.com",
+    port: 587,
+    secure: false, // true for 465, false for other ports
+    auth: {
+      user: 'yourtrip@tripmidas.com', // generated ethereal user
+      pass: 'Tr!p1M!D@s$m9410' // generated ethereal password
+    }
+  });
+  let mailOptions = {
+    from: '"Fred Foo 👻" <foo@example.com>', // sender address
+    to: "dilipwk@gmail.com", // list of receivers
+    subject: "NODEJS Email  ✔", // Subject line
+    text: "Hello world?", // plain text body
+    html: "<b>Hello world?</b>" // html body
+  };
+  
 const app = express();
 
 app.set('secretKey', 'nodeRestApi'); // jwt secret token
@@ -42,6 +61,9 @@ app.use('/manageVendors',validateUser,manageVendors);
 //Create Ticket
 app.use('/createTicket',createTicket);
 
+//Send Email
+app.use('/sendMail',sendEmail);
+
 
 app.get('/favicon.ico', function(req, res) {
     res.sendStatus(204);
@@ -58,6 +80,14 @@ function validateUser(req, res, next) {
     }
   });
   
+}
+
+function sendEmail(req,res,next){
+  let info = transporter.sendMail(mailOptions)
+
+  console.log("Message sent: %s", info.messageId);
+  // Preview only available when sending through an Ethereal account
+  console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
 }
 
 
