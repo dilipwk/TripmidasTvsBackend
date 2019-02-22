@@ -1,5 +1,22 @@
 
-const requestBid = require('../../models/admin/requestBid');					
+const requestBid = require('../../models/admin/requestBid');	
+const manageVendors = require('../../models/vendor/manageVendors' );	
+const nodemailer = require("nodemailer");
+  // create reusable transporter object using the default SMTP transport
+  let transporter = nodemailer.createTransport({
+    host: "smtp.office365.com",
+    port: 587,
+    secure: false, // true for 465, false for other ports
+    auth: {
+      user: 'yourtrip@tripmidas.com', // generated ethereal user
+      pass: 'Tr!p1M!D@s$m9410' // generated ethereal password
+    }
+  });
+  let mailOptions = {
+    from: 'yourtrip@tripmidas.com', // sender address
+    subject: "Tripmidas - You have a ticket to bid", // Subject line
+     // html body
+  };				
 
 module.exports = {
 	getById: function(req, res, next) {
@@ -40,14 +57,32 @@ module.exports = {
 
 
 	create: function(req, res, next) {
-        console.log(JSON.stringify(req.body));
 		requestBid.create({ travelId: req.body.travelId, travelDetails: req.body.travelDetails,travellerDetails:req.body.travellerDetails,updatedOn: new Date() }, function (err, result) {
 				  if (err) 
 				  	next(err);
 				  else{
-				  	res.json({status: "success", message: "Requested for bid successfully", data: result});
+					manageVendors.find({}, function(err, vendors){
+						if (err){
+							next(err);
+						} else{
+							for (let vendor of vendors) {
+								mailOptions.to = vendor.vendorDetails.vendorEmail;
+								mailOptions.html = "<b>Vendor ID: "+ vendor._id+" Bid ID: "+result._id+"</b>"
+								transporter.sendMail(mailOptions)
+							}
+							
+										
+						}
+
+					});
+				  res.json({status: "success", message: "Requested for bid successfully", data: result._id})
+
+				  
 				  }
-				});
+				})
 	},
+
+
+	  
 
 }					
