@@ -84,7 +84,7 @@ function validateUser(req, res, next) {
 
 function sendEmail(req,res,next){
   let info = transporter.sendMail(mailOptions)
-
+  res.json({status:"success", message: info.messageId+ nodemailer.getTestMessageUrl(info) });
   console.log("Message sent: %s", info.messageId);
   // Preview only available when sending through an Ethereal account
   console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
