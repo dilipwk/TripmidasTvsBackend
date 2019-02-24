@@ -9,9 +9,9 @@ module.exports = {
 			if (err) {
 				next(err);
 			} else {
-               // var timeDiff = new Date() - new Date(bidInfo.updatedOn);
-                //timeDiff =  Math.round(((timeDiff % 86400000) % 3600000) / 60000)
-                //if(timeDiff < 30){
+               var timeDiff = new Date() - new Date(bidInfo.updatedOn);
+                timeDiff =  Math.round(((timeDiff % 86400000) % 3600000) / 60000)
+                if(timeDiff < 30){
                     requestBid.findById(bidInfo.adminRequestBidId, function(err, requestBidInfo){
                         if (err) {
                             next(err);
@@ -20,10 +20,10 @@ module.exports = {
                             res.json({status:"success", message: "Data found!!!",isValid:true, data:{bidInfo,travellerDetails}});
                         }
                     });
-                //}
-                //else{
-                //    res.json({status:"success", message: "Timeout", isValid:false,data:{bidInfo: null}});
-                //}
+                }
+                else{
+                   res.json({status:"success", message: "Timeout", isValid:false,data:{bidInfo: null}});
+                }
                 
 			}
 		});

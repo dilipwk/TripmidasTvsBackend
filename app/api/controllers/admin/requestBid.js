@@ -1,6 +1,7 @@
 
 const requestBid = require('../../models/admin/requestBid');	
-const manageVendors = require('../../models/vendor/manageVendors' );	
+const manageVendors = require('../../models/vendor/manageVendors' );
+const submitBid = require('../../models/vendor/submitBid');		
 const nodemailer = require("nodemailer");
   // create reusable transporter object using the default SMTP transport
   let transporter = nodemailer.createTransport({
@@ -57,7 +58,7 @@ module.exports = {
 
 
 	create: function(req, res, next) {
-		requestBid.create({ travelId: req.body.travelId, travelDetails: req.body.travelDetails,travellerDetails:req.body.travellerDetails,updatedOn: new Date() }, function (err, result) {
+		requestBid.create({ travelId: req.body.travelId, travelDetails: req.body.travelDetails, travellerDetails:req.body.travellerDetails,updatedOn: new Date() }, function (err, result) {
 				  if (err) 
 				  	next(err);
 				  else{
@@ -75,12 +76,42 @@ module.exports = {
 						}
 
 					});
-				  res.json({status: "success", message: "Requested for bid successfully", data: result._id})
+				  res.json({status: "success", message: "Requested for bid successfully", data: result})
 
 				  
 				  }
 				})
 	},
+
+
+	filterBids: function(req,res,next){
+		var date = new Date();
+		var myStartDate =new Date(date.getTime() - 30*60000);
+	//	res.json({status:"success", message: "Data found!!!",isValid:true, data:{current:date,update:myStartDate}});
+	let bidData = [];
+		requestBid.find({updatedOn:{$gte:myStartDate,$lt:date}}, function(err, bids){
+			if (err){
+				next(err);
+			} else{
+				for (let bid of bids) {
+					bidData.push({bid:bid});
+					console.log(bid._id)
+					submitBid.findById(bid._id, function(err, bidInfo){
+						if (err) {
+							next(err);
+						} else {
+							//for(let travelDetail of bidInfo)
+							console.log(bidInfo);
+						}
+					});
+				}
+				res.json({status:"success", message: "Bid List", data:{bidData,curr:date,update:myStartDate}});
+							
+			}
+
+		});
+
+	}
 
 
 	  
