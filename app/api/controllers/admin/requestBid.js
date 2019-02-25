@@ -95,7 +95,7 @@ module.exports = {
 			} else{
 				for (let bid of bids) {
 					bidData.push({bid:bid});
-					console.log(bid._id)
+					console.log("admin bid id:"+bid._id)
 					submitBid.findById(bid._id, function(err, bidInfo){
 						if (err) {
 							next(err);
