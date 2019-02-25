@@ -35,7 +35,7 @@ app.use('/tvs/users', users);
 app.use('/movies', validateUser, movies);
 
 //request bid
-app.use('/tvs/requestbid',validateUser,requestBid);
+app.use('/tvs/requestbid',requestBid);
 
 //submit bid
 app.use('/tvs/submitbid',submitBid);
