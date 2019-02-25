@@ -29,22 +29,22 @@ res.json({"tutorial" : "Build REST API with node.js"});
 });
 
 // public route
-app.use('/users', users);
+app.use('/tvs/users', users);
 
 // private route
 app.use('/movies', validateUser, movies);
 
 //request bid
-app.use('/requestbid',validateUser,requestBid);
+app.use('/tvs/requestbid',validateUser,requestBid);
 
 //submit bid
-app.use('/submitbid',submitBid);
+app.use('/tvs/submitbid',submitBid);
 
 //Manage Vendors
-app.use('/manageVendors',manageVendors);
+app.use('/tvs/manageVendors',manageVendors);
 
 //Create Ticket
-app.use('/createTicket',createTicket);
+app.use('/tvs/createTicket',createTicket);
 
 
 app.get('/favicon.ico', function(req, res) {
