@@ -5,7 +5,7 @@ const Schema = mongoose.Schema;
 
 const requestBidSchema = new Schema({
     travelDetails: {
-        type: Object,
+        type: Array,
 		trim: false,		
 		required: true,
     },
