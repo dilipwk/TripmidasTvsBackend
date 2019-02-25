@@ -39,7 +39,7 @@ app.use('/requestbid',validateUser,requestBid);
 app.use('/submitbid',submitBid);
 
 //Manage Vendors
-app.use('/manageVendors',validateUser,manageVendors);
+app.use('/manageVendors',manageVendors);
 
 //Create Ticket
 app.use('/createTicket',createTicket);
