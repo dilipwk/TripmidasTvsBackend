@@ -12,7 +12,7 @@ const requestBidSchema = new Schema({
     travellerDetails: {
 		type: Object,
 		trim: false,		
-		required: true,
+		required: false,
 	}, 
     updatedOn: {
         type: Date,

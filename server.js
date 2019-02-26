@@ -7,7 +7,6 @@ const submitBid = require('./routes/vendor/submitBid');
 const manageVendors = require('./routes/vendor/manageVendors');
 const createTicket = require('./routes/vendor/createTicket');
 const bodyParser = require('body-parser');
-var cors = require('cors')
 const mongoose = require('./config/database'); //database configuration
 var jwt = require('jsonwebtoken');
 
@@ -15,7 +14,6 @@ var jwt = require('jsonwebtoken');
 const app = express();
 
 app.set('secretKey', 'nodeRestApi'); // jwt secret token
-app.use(cors())
 
 // connection to mongodb
 mongoose.connection.on('error', console.error.bind(console, 'MongoDB connection error:'));
