@@ -10,9 +10,9 @@ module.exports = {
 			 if (err) {
 				next(err);
 			} else {
-               var timeDiff = new Date() - new Date(bidInfo.updatedOn);
-                timeDiff =  Math.round(((timeDiff % 86400000) % 3600000) / 60000)
-                if(timeDiff < 30){
+            //    var timeDiff = new Date() - new Date(bidInfo.updatedOn);
+            //     timeDiff =  Math.round(((timeDiff % 86400000) % 3600000) / 60000)
+            //     if(timeDiff < 30){
                     requestBid.findById(bidInfo.adminRequestBidId, function(err, requestBidInfo){
                         if (err) {
                             next(err);
@@ -21,10 +21,10 @@ module.exports = {
                             res.json({status:"success", message: "Data found!!!",isValid:true, data:{bidInfo,travellerDetails}});
                         }
                     });
-                }
-                else{
-                   res.json({status:"success", message: "Timeout", isValid:false,data:{bidInfo: null}});
-                }
+            //    }
+            //     else{
+            //        res.json({status:"success", message: "Timeout", isValid:false,data:{bidInfo: null}});
+            //     }
                 
 			}
 		});
@@ -61,12 +61,15 @@ module.exports = {
 
 	filterBids: function(req,res,next){
 		var date = new Date();
-		var myStartDate =new Date(date.getTime() - 30*60000).toISOString();
+		var myStartDate =new Date(date.getTime() - 60*60000).toISOString();
 		date = new Date().toISOString();
 	//	res.json({status:"success", message: "Data found!!!",isValid:true, data:{current:date,update:myStartDate}});
 	console.log(myStartDate);
 	console.log(date);
 	let bidData = [];
+	let travelFilter = [];
+	let corporate = [];
+	let retail = [];
 		requestBid.find({updatedOn:{$gte:myStartDate,$lt:date}}, function(err, bids){
 			if (err){
 				next(err);
@@ -74,16 +77,31 @@ module.exports = {
 				for (let bid of bids) {
 					bidData.push({bid:bid});
 					console.log("admin bid id:"+bid._id)
-					submitBid.findById({adminRequestBidId:bid._id}, function(err, bidInfo){
+					submitBid.find({adminRequestBidId:bid._id}, function(err, bidInfo){
 						if (err) {
 							next(err);
 						} else {
-							//for(let travelDetail of bidInfo)
-							console.log(bidInfo);
+							for(let travelDetail of bidInfo){
+								for(let inDetail of travelDetail.travelDetails){
+									travelFilter.push(inDetail);									
+								}
+							}
+							travelFilter.forEach((item) => {
+								if(item.type === 'Corporate'){
+									corporate.push(item)
+								} else {
+									retail.push(item);
+								}
+							});
+							if(corporate.length > 0){
+								var res = Math.max.apply(Math,corporate.map(function(o){return parseInt(o.totalFare);}))
+								console.log(res);
+							}
+							res.json({status:"success", message: "Bid List", data:{travelFilter,curr:date,update:myStartDate}});
 						}
 					});
 				}
-				res.json({status:"success", message: "Bid List", data:{bidData,curr:date,update:myStartDate}});
+				
 							
 			}
 
