@@ -69,6 +69,7 @@ module.exports = {
 	let bidData = [];
 	let travelFilter = [];
 	let corporate = [];
+	corporate.data = {};
 	let retail = [];
 		requestBid.find({updatedOn:{$gte:myStartDate,$lt:date}}, function(err, bids){
 			if (err){
@@ -82,22 +83,26 @@ module.exports = {
 							next(err);
 						} else {
 							for(let travelDetail of bidInfo){
-								for(let inDetail of travelDetail.travelDetails){
-									travelFilter.push(inDetail);									
-								}
+								travelFilter.push(travelDetail);
+								corporate.push({data:travelDetail.travelDetails,vendorId:travelDetail.vendorId});
+								// for(let inDetail of travelDetail.travelDetails){
+								// 	travelFilter.push(inDetail);									
+								// }
+								// travelDetail.travelDetails.forEach((item) => {
+								// 	if(item.type === 'Corporate'){
+								// 		corporate.push(item)
+								// 	} else {
+								// 		retail.push(item);
+								// 	}
+								// });
 							}
-							travelFilter.forEach((item) => {
-								if(item.type === 'Corporate'){
-									corporate.push(item)
-								} else {
-									retail.push(item);
-								}
-							});
-							if(corporate.length > 0){
-								var res = Math.max.apply(Math,corporate.map(function(o){return parseInt(o.totalFare);}))
-								console.log(res);
-							}
-							res.json({status:"success", message: "Bid List", data:{travelFilter,curr:date,update:myStartDate}});
+							
+							// if(corporate.length > 0){
+							// 	var res = Math.max.apply(Math,corporate.map(function(o){return parseInt(o.totalFare);}))
+							// 	console.log(res);
+							// }
+							
+							res.json({status:"success", message: "Bid List", data:{corporate:corporate,retail:retail,travelFilter,curr:date,update:myStartDate}});
 						}
 					});
 				}
