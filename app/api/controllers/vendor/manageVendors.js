@@ -3,7 +3,6 @@ const manageVendorsModel = require('../../models/vendor/manageVendors' );
 
 module.exports = {
 	getById: function(req, res, next) {
-		console.log(req.body);
 		manageVendorsModel.findById(req.params.vendorId, function(err, vendorInfo){
 			if (err) {
 				next(err);

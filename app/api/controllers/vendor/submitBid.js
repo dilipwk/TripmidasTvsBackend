@@ -1,6 +1,23 @@
 
 const submitBid = require('../../models/vendor/submitBid');					
-const requestBid = require('../../models/admin/requestBid');	
+const requestBid = require('../../models/admin/requestBid');
+const manageVendorsModel = require('../../models/vendor/manageVendors' );		
+const nodemailer = require("nodemailer");
+  // create reusable transporter object using the default SMTP transport
+  let transporter = nodemailer.createTransport({
+    host: "smtp.office365.com",
+    port: 587,
+    secure: false, // true for 465, false for other ports
+    auth: {
+      user: 'yourtrip@tripmidas.com', // generated ethereal user
+      pass: 'Tr!p1M!D@s$m9410' // generated ethereal password
+    }
+  });
+  let mailOptions = {
+    from: 'yourtrip@tripmidas.com', // sender address
+    subject: "Tripmidas - Congratulations!! You bid is filtered to book ticket", // Subject line
+     // html body
+  };
 
 module.exports = {
 	getById: function(req, res, next) {
@@ -63,53 +80,49 @@ module.exports = {
 		var date = new Date();
 		var myStartDate =new Date(date.getTime() - 60*60000).toISOString();
 		date = new Date().toISOString();
-	//	res.json({status:"success", message: "Data found!!!",isValid:true, data:{current:date,update:myStartDate}});
-	console.log(myStartDate);
-	console.log(date);
-	let bidData = [];
-	let travelFilter = [];
-	let corporate = [];
-	corporate.data = {};
-	let retail = [];
+		let bidData = [];
+		let corporate = [];
 		requestBid.find({updatedOn:{$gte:myStartDate,$lt:date}}, function(err, bids){
 			if (err){
 				next(err);
 			} else{
 				for (let bid of bids) {
 					bidData.push({bid:bid});
-					console.log("admin bid id:"+bid._id)
 					submitBid.find({adminRequestBidId:bid._id}, function(err, bidInfo){
 						if (err) {
 							next(err);
 						} else {
 							for(let travelDetail of bidInfo){
-								travelFilter.push(travelDetail);
-								corporate.push({data:travelDetail.travelDetails,vendorId:travelDetail.vendorId});
-								// for(let inDetail of travelDetail.travelDetails){
-								// 	travelFilter.push(inDetail);									
-								// }
-								// travelDetail.travelDetails.forEach((item) => {
-								// 	if(item.type === 'Corporate'){
-								// 		corporate.push(item)
-								// 	} else {
-								// 		retail.push(item);
-								// 	}
-								// });
+								for(let inDetail of travelDetail.travelDetails){
+									inDetail.vendorId = travelDetail.vendorId;
+									inDetail.travellerDetails =  travelDetail.travellerDetails;
+									inDetail.adminRequestBidId = travelDetail.adminRequestBidId;
+									corporate.push(inDetail);
+								}
 							}
+							var result = Math.min.apply(Math,corporate.map(function(o){
+								return o.totalFare;}))
+								let index = corporate.findIndex(x => x.totalFare==result)
+								manageVendorsModel.findById(corporate[index].vendorId, function(err, vendorInfo){
+									if (err) {
+										next(err);
+									} else {
+										console.log(vendorInfo.vendorDetails.vendorEmail);
+										//email vendor
+										mailOptions.to = vendorInfo.vendorDetails.vendorEmail;
+										mailOptions.html = "<b>You are eligible to book ticket for the below flight details <br>"+corporate[index] +" <br>Please Check the below link <br> https://tvs.tripmidas.in/tvs?bid="+corporate[index].adminRequestBidId+"&vid="+ corporate[index].vendorId+"</b>"
+										transporter.sendMail(mailOptions);
+										
+									}
+									
+									res.json({status:"success", message: "Bid List", data:{}});
+								});
+								
 							
-							// if(corporate.length > 0){
-							// 	var res = Math.max.apply(Math,corporate.map(function(o){return parseInt(o.totalFare);}))
-							// 	console.log(res);
-							// }
-							
-							res.json({status:"success", message: "Bid List", data:{corporate:corporate,retail:retail,travelFilter,curr:date,update:myStartDate}});
 						}
 					});
-				}
-				
-							
+				}			
 			}
-
 		});
 
 	},

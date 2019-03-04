@@ -68,11 +68,9 @@ module.exports = {
 						} else{
 							for (let vendor of vendors) {
 								mailOptions.to = vendor.vendorDetails.vendorEmail;
-								mailOptions.html = "<b>Vendor ID: "+ vendor._id+" Bid ID: "+result._id+"</b>"
+								mailOptions.html = "<b>You have a ticket to bid https://tvs.tripmidas.in/tvs?vid="+vendor._id+"&bid="+result._id+"</b>"
 								transporter.sendMail(mailOptions)
-							}
-							
-										
+							}			
 						}
 
 					});
