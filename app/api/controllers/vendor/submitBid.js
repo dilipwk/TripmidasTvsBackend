@@ -15,7 +15,7 @@ const nodemailer = require("nodemailer");
   });
   let mailOptions = {
     from: 'yourtrip@tripmidas.com', // sender address
-    subject: "Tripmidas - Congratulations!! You bid is filtered to book ticket", // Subject line
+    subject: "Tripmidas - Congratulations!! Your bid is filtered to book ticket", // Subject line
      // html body
   };
 
@@ -82,6 +82,7 @@ module.exports = {
 		date = new Date().toISOString();
 		let bidData = [];
 		let corporate = [];
+		let travelData = [];
 		requestBid.find({updatedOn:{$gte:myStartDate,$lt:date}}, function(err, bids){
 			if (err){
 				next(err);
@@ -93,8 +94,10 @@ module.exports = {
 							next(err);
 						} else {
 							for(let travelDetail of bidInfo){
+								travelData.push(travelDetail);
 								for(let inDetail of travelDetail.travelDetails){
 									inDetail.vendorId = travelDetail.vendorId;
+									inDetail.submittedBidId = travelDetail._id;
 									inDetail.travellerDetails =  travelDetail.travellerDetails;
 									inDetail.adminRequestBidId = travelDetail.adminRequestBidId;
 									corporate.push(inDetail);
@@ -107,17 +110,15 @@ module.exports = {
 									if (err) {
 										next(err);
 									} else {
-										console.log(vendorInfo.vendorDetails.vendorEmail);
 										//email vendor
 										mailOptions.to = vendorInfo.vendorDetails.vendorEmail;
-										mailOptions.html = "<b>You are eligible to book ticket for the below flight details <br>"+corporate[index] +" <br>Please Check the below link <br> https://tvs.tripmidas.in/tvs?bid="+corporate[index].adminRequestBidId+"&vid="+ corporate[index].vendorId+"</b>"
+										mailOptions.html = "<b>You are eligible to book ticket  <br> <br>Please Check the below link <br> https://tvs.tripmidas.in/tvs/uploadticket/"+corporate[index].submittedBidId+"/"+corporate[index].adminRequestBidId+"/"+ corporate[index].vendorId+"/"+index+"</b>"
 										transporter.sendMail(mailOptions);
 										
 									}
 									
-									res.json({status:"success", message: "Bid List", data:{}});
+									res.json({status:"success", message: "Filter", data:{}});
 								});
-								
 							
 						}
 					});
