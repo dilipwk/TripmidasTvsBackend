@@ -47,6 +47,16 @@ module.exports = {
 		});
 	},
 
+	getByVendor: function(req,res,next){
+		submitBid.find({adminRequestBidId:req.params.adminRequestBidId,vendorId:req.params.vendorId},function(err, bidData){
+			if(err){
+				next(err);
+			} else {
+				res.json({status:"success", message: "Data found!!!",isValid:true, data:{bidData}});
+			}
+		})
+	},
+
 	getAll: function(req, res, next) {
 		let bidData = [];
 
@@ -66,14 +76,25 @@ module.exports = {
 
 
 	create: function(req, res, next) {
-		submitBid.create({ adminRequestBidId: req.body.adminRequestBidId, vendorId: req.body.vendorId,travelDetails: req.body.travelDetails,updatedOn:new Date().toISOString()
-		}, function (err, result) {
-				  if (err) 
-				  	next(err);
-				  else
-				  	res.json({status: "success", message: "Bid Submitted successfully", data: result});
-				  
-				});
+		submitBid.find({adminRequestBidId:req.body.adminRequestBidId,vendorId:req.body.vendorId},function(err, bidData){
+			if(err){
+				next(err);
+			} else {
+				if(bidData.length <= 0){
+					submitBid.create({ adminRequestBidId: req.body.adminRequestBidId, vendorId: req.body.vendorId,travelDetails: req.body.travelDetails,updatedOn:new Date().toISOString()
+					}, function (err, result) {
+							  if (err) 
+								  next(err);
+							  else
+								  res.json({status: "success", message: "Bid Submitted successfully", data: result});
+							  
+							});
+				} else {
+					res.json({status: "success", message: "Bid already submitted", data: {}});
+				}
+			}
+		})
+		
 	},
 
 	filterBids: function(req,res,next){
@@ -82,6 +103,7 @@ module.exports = {
 		date = new Date().toISOString();
 		let bidData = [];
 		let corporate = [];
+		let retail = [];
 		let travelData = [];
 		requestBid.find({updatedOn:{$gte:myStartDate,$lt:date}}, function(err, bids){
 			if (err){
@@ -100,12 +122,19 @@ module.exports = {
 									inDetail.submittedBidId = travelDetail._id;
 									inDetail.travellerDetails =  travelDetail.travellerDetails;
 									inDetail.adminRequestBidId = travelDetail.adminRequestBidId;
-									corporate.push(inDetail);
+									inDetail.totalSum = parseFloat(inDetail.totalFare) +  parseFloat(inDetail.cancellationFee);
+									console.log(inDetail.totalSum);
+									if(inDetail.type == 'Corporate')
+										corporate.push(inDetail);
+									else 
+										retail.push(inDetail);
 								}
 							}
-							var result = Math.min.apply(Math,corporate.map(function(o){
-								return o.totalFare;}))
-								let index = corporate.findIndex(x => x.totalFare==result)
+							if(corporate.length > 0){
+								var result = Math.min.apply(Math,corporate.map(function(o){	
+								return o.totalSum;}))
+							
+								let index = corporate.findIndex(x => x.totalSum==result)
 								manageVendorsModel.findById(corporate[index].vendorId, function(err, vendorInfo){
 									if (err) {
 										next(err);
@@ -119,7 +148,25 @@ module.exports = {
 									
 									res.json({status:"success", message: "Filter", data:{}});
 								});
-							
+							} else {
+								var result = Math.min.apply(Math,retail.map(function(o){	
+									return o.totalSum;}))
+								
+									let index = retail.findIndex(x => x.totalSum==result)
+									manageVendorsModel.findById(corporate[index].vendorId, function(err, vendorInfo){
+										if (err) {
+											next(err);
+										} else {
+											//email vendor
+											mailOptions.to = vendorInfo.vendorDetails.vendorEmail;
+											mailOptions.html = "<b>You are eligible to book ticket  <br> <br>Please Check the below link <br> https://tvs.tripmidas.in/tvs/uploadticket/"+corporate[index].submittedBidId+"/"+corporate[index].adminRequestBidId+"/"+ corporate[index].vendorId+"/"+index+"</b>"
+											transporter.sendMail(mailOptions);
+											
+										}
+										
+										res.json({status:"success", message: "Filter", data:{}});
+									});
+							}
 						}
 					});
 				}			

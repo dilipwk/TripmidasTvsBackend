@@ -6,6 +6,7 @@ router.get('/', submitBidController.getAll);
 router.get('/filterBids',submitBidController.filterBids);
 router.post('/', submitBidController.create);
 router.get('/:bidId', submitBidController.getById);
+router.get('/:adminRequestBidId/:vendorId',submitBidController.getByVendor);
 
 
 module.exports = router;
